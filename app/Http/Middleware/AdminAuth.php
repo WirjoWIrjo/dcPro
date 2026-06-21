@@ -15,7 +15,7 @@ class AdminAuth
         }
 
         $user = \App\Models\User::find(Session::get('admin_id'));
-        if (!$user || $user->role !== 'admin') {
+        if (!$user || !in_array($user->role, ['admin', 'owner'])) {
             Session::forget('admin_id');
             return redirect()->route('admin.login')->with('error', 'Akses ditolak. Hanya admin yang diizinkan.');
         }

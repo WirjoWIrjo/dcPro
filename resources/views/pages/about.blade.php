@@ -21,7 +21,7 @@
         <div class="col-lg-8">
             <h6 class="text-primary fw-bold text-uppercase">Professional Profile</h6>
             <h1 class="fw-bold mb-3">Wirjo Wirjo</h1>
-            <p class="lead text-muted">Data Centre Engineering Support (DCES) Office Boy & Information Systems Student.</p>
+            <p class="lead text-muted">Data Centre Engineering Support Office Boy & Information Systems Student.</p>
             
             <hr class="my-4">
 

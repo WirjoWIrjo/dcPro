@@ -33,7 +33,7 @@ class FacilityController extends Controller
             'status'           => ['required', 'in:Active,Inactive,Maintenance'],
         ]);
 
-        FacilitySystem::create($validated);
+        FacilitySystem::create($validated + ['is_demo' => true]);
 
         session()->flash('success', 'Sistem baru berhasil ditambahkan.');
         return redirect()->route('facilities.index');
@@ -55,6 +55,7 @@ class FacilityController extends Controller
         ]);
 
         $system = FacilitySystem::findOrFail($id);
+        $validated['is_demo'] = true;
         $system->update($validated);
 
         session()->flash('success', 'Data sistem berhasil diperbarui.');

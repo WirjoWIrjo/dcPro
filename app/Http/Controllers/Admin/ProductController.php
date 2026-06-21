@@ -40,7 +40,7 @@ class ProductController extends Controller
             $validated['image'] = 'uploads/products/' . $filename;
         }
 
-        Product::create($validated);
+        Product::create($validated + ['is_demo' => true]);
 
         return redirect()->route('admin.products.index')->with('success', 'Produk berhasil ditambahkan.');
     }
@@ -78,6 +78,7 @@ class ProductController extends Controller
             $validated['image'] = 'uploads/products/' . $filename;
         }
 
+        $validated['is_demo'] = true;
         $product->update($validated);
 
         return redirect()->route('admin.products.index')->with('success', 'Produk berhasil diperbarui.');

@@ -18,6 +18,7 @@ class ArticleSeeder extends Seeder
                 'excerpt' => 'Bagaimana tim engineering kami berhasil menurunkan angka Power Usage Effectiveness melalui sistem cooling modern.',
                 'content' => 'Isi konten lengkap mengenai strategi optimasi energi...',
                 'image' => null,
+                'is_demo' => true,
             ]
         );
 
@@ -29,6 +30,7 @@ class ArticleSeeder extends Seeder
                 'excerpt' => 'Mengenal protokol redundansi yang menjamin ketersediaan layanan 99.999% bagi infrastruktur digital.',
                 'content' => 'Penjelasan mendalam mengenai infrastruktur Tier IV...',
                 'image' => null,
+                'is_demo' => true,
             ]
         );
     }

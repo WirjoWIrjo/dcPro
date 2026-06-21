@@ -40,9 +40,10 @@ class ProfileController extends Controller
 
         $profile = CompanyProfile::first();
         if ($profile) {
+            $validated['is_demo'] = true;
             $profile->update($validated);
         } else {
-            CompanyProfile::create($validated);
+            CompanyProfile::create($validated + ['is_demo' => true]);
         }
 
         return redirect()->route('admin.profile.edit')->with('success', 'Profil perusahaan berhasil diperbarui.');

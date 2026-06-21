@@ -35,7 +35,7 @@ class GalleryController extends Controller
             $validated['image'] = 'uploads/galleries/' . $filename;
         }
 
-        Gallery::create($validated);
+        Gallery::create($validated + ['is_demo' => true]);
 
         return redirect()->route('admin.galleries.index')->with('success', 'Galeri berhasil ditambahkan.');
     }
@@ -69,6 +69,7 @@ class GalleryController extends Controller
             $validated['image'] = 'uploads/galleries/' . $filename;
         }
 
+        $validated['is_demo'] = true;
         $gallery->update($validated);
 
         return redirect()->route('admin.galleries.index')->with('success', 'Galeri berhasil diperbarui.');

@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schedule;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
@@ -34,3 +35,5 @@ Artisan::command('make:admin-user', function () {
 
     $this->info("Admin created: {$user->email} (ID: {$user->id})");
 })->purpose('Create a new admin user');
+
+Schedule::command('app:demo-cleanup')->everyMinute();

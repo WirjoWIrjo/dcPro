@@ -35,7 +35,7 @@ class MonitoringController extends Controller
             'total_consumption'=> ['required', 'numeric', 'min:0'],
         ]);
 
-        EnergyMetric::create($validated);
+        EnergyMetric::create($validated + ['is_demo' => true]);
 
         session()->flash('success', 'Metric baru berhasil ditambahkan.');
         return redirect()->route('monitoring.index');
@@ -56,6 +56,7 @@ class MonitoringController extends Controller
         ]);
 
         $metric = EnergyMetric::findOrFail($id);
+        $validated['is_demo'] = true;
         $metric->update($validated);
 
         session()->flash('success', 'Metric berhasil diperbarui.');
@@ -98,7 +99,7 @@ class MonitoringController extends Controller
             'content' => ['required', 'string'],
         ]);
 
-        Article::create($validated);
+        Article::create($validated + ['is_demo' => true]);
 
         session()->flash('success', 'Artikel baru berhasil dipublikasikan.');
         return redirect()->route('monitoring.indexArtikel');
@@ -119,6 +120,7 @@ class MonitoringController extends Controller
         ]);
 
         $article = Article::findOrFail($id);
+        $validated['is_demo'] = true;
         $article->update($validated);
 
         session()->flash('success', 'Artikel berhasil diperbarui.');

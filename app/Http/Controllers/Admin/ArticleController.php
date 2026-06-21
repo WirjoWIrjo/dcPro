@@ -39,7 +39,7 @@ class ArticleController extends Controller
             $validated['image'] = 'uploads/articles/' . $filename;
         }
 
-        Article::create($validated);
+        Article::create($validated + ['is_demo' => true]);
 
         return redirect()->route('admin.articles.index')->with('success', 'Artikel berhasil ditambahkan.');
     }
@@ -76,6 +76,7 @@ class ArticleController extends Controller
             $validated['image'] = 'uploads/articles/' . $filename;
         }
 
+        $validated['is_demo'] = true;
         $article->update($validated);
 
         return redirect()->route('admin.articles.index')->with('success', 'Artikel berhasil diperbarui.');

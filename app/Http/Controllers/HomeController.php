@@ -26,7 +26,7 @@ class HomeController extends Controller
             'metric_value' => ['required', 'string', 'max:100'],
         ]);
 
-        DcHighlight::create($validated);
+        DcHighlight::create($validated + ['is_demo' => true]);
 
         session()->flash('success', 'Highlight baru berhasil ditambahkan.');
         return redirect()->route('home.index');
@@ -47,6 +47,7 @@ class HomeController extends Controller
         ]);
 
         $highlight = DcHighlight::findOrFail($id);
+        $validated['is_demo'] = true;
         $highlight->update($validated);
 
         session()->flash('success', 'Highlight berhasil diperbarui.');

@@ -73,10 +73,9 @@
             </form>
 
             <div class="mt-4 p-3 bg-light rounded">
-                <h6 class="fw-bold text-muted mb-2"><i class="bi bi-info-circle"></i> Demo Login</h6>
+                <h6 class="fw-bold text-muted mb-2"><i class="bi bi-info-circle"></i> Admin Login</h6>
                 <div class="small">
-                    <div class="mb-1"><strong>Admin Demo:</strong> admin@datacenterpro.com / password</div>
-                    <div><strong>Owner:</strong> owner@datacenterpro.com / password_2026</div>
+                    <div><strong>Admin:</strong> admin@datacenterpro.com / password</div>
                 </div>
             </div>
         </div>

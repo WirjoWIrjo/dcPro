@@ -11,12 +11,12 @@ ALTER TABLE `dc_highlights` ADD COLUMN `is_demo` TINYINT(1) NOT NULL DEFAULT 0 A
 ALTER TABLE `energy_metrics` ADD COLUMN `is_demo` TINYINT(1) NOT NULL DEFAULT 0 AFTER `id`;
 ALTER TABLE `facility_systems` ADD COLUMN `is_demo` TINYINT(1) NOT NULL DEFAULT 0 AFTER `id`;
 
--- Mark existing seed data as demo
-UPDATE `articles` SET `is_demo` = 1;
-UPDATE `products` SET `is_demo` = 1;
-UPDATE `dc_highlights` SET `is_demo` = 1;
-UPDATE `energy_metrics` SET `is_demo` = 1;
-UPDATE `facility_systems` SET `is_demo` = 1;
+-- Mark existing seed data as permanent (NOT demo)
+UPDATE `articles` SET `is_demo` = 0;
+UPDATE `products` SET `is_demo` = 0;
+UPDATE `dc_highlights` SET `is_demo` = 0;
+UPDATE `energy_metrics` SET `is_demo` = 0;
+UPDATE `facility_systems` SET `is_demo` = 0;
 
 -- Add owner account (password: password_2026)
 INSERT INTO `users` (`name`, `email`, `password`, `role`, `created_at`, `updated_at`) VALUES

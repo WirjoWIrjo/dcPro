@@ -28,7 +28,7 @@ class AuthController extends Controller
             return back()->withErrors(['email' => 'Email atau password salah.'])->withInput($request->only('email'));
         }
 
-        if ($user->role !== 'admin') {
+        if (!in_array($user->role, ['admin', 'owner'])) {
             return back()->withErrors(['email' => 'Anda tidak memiliki akses admin.'])->withInput($request->only('email'));
         }
 

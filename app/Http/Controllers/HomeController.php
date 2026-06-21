@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Admin\Traits\DemoMode;
 use App\Models\DcHighlight;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+    use DemoMode;
     public function index()
     {
         $highlights = DcHighlight::orderByDesc('created_at')->get();
@@ -26,7 +28,7 @@ class HomeController extends Controller
             'metric_value' => ['required', 'string', 'max:100'],
         ]);
 
-        DcHighlight::create($validated + ['is_demo' => true]);
+        DcHighlight::create($validated + ['is_demo' => $this->isDemoRecord()]);
 
         session()->flash('success', 'Highlight baru berhasil ditambahkan.');
         return redirect()->route('home.index');
@@ -47,7 +49,7 @@ class HomeController extends Controller
         ]);
 
         $highlight = DcHighlight::findOrFail($id);
-        $validated['is_demo'] = true;
+        $validated['is_demo'] = $this->isDemoRecord();
         $highlight->update($validated);
 
         session()->flash('success', 'Highlight berhasil diperbarui.');

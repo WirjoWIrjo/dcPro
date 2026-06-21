@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\Traits\DemoMode;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
+    use DemoMode;
     public function index()
     {
         $products = Product::latest()->paginate(10);
@@ -40,7 +42,7 @@ class ProductController extends Controller
             $validated['image'] = 'uploads/products/' . $filename;
         }
 
-        Product::create($validated + ['is_demo' => true]);
+        Product::create($validated + ['is_demo' => $this->isDemoRecord()]);
 
         return redirect()->route('admin.products.index')->with('success', 'Produk berhasil ditambahkan.');
     }
@@ -78,7 +80,7 @@ class ProductController extends Controller
             $validated['image'] = 'uploads/products/' . $filename;
         }
 
-        $validated['is_demo'] = true;
+        $validated['is_demo'] = $this->isDemoRecord();
         $product->update($validated);
 
         return redirect()->route('admin.products.index')->with('success', 'Produk berhasil diperbarui.');

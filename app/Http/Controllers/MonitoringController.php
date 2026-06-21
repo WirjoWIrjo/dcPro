@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Admin\Traits\DemoMode;
 use App\Models\EnergyMetric;
 use App\Models\Article;
 use Illuminate\Http\Request;
 
 class MonitoringController extends Controller
 {
+    use DemoMode;
     public function index()
     {
         $metrics = EnergyMetric::orderByDesc('created_at')->get();
@@ -35,7 +37,7 @@ class MonitoringController extends Controller
             'total_consumption'=> ['required', 'numeric', 'min:0'],
         ]);
 
-        EnergyMetric::create($validated + ['is_demo' => true]);
+        EnergyMetric::create($validated + ['is_demo' => $this->isDemoRecord()]);
 
         session()->flash('success', 'Metric baru berhasil ditambahkan.');
         return redirect()->route('monitoring.index');
@@ -56,7 +58,7 @@ class MonitoringController extends Controller
         ]);
 
         $metric = EnergyMetric::findOrFail($id);
-        $validated['is_demo'] = true;
+        $validated['is_demo'] = $this->isDemoRecord();
         $metric->update($validated);
 
         session()->flash('success', 'Metric berhasil diperbarui.');
@@ -99,7 +101,7 @@ class MonitoringController extends Controller
             'content' => ['required', 'string'],
         ]);
 
-        Article::create($validated + ['is_demo' => true]);
+        Article::create($validated + ['is_demo' => $this->isDemoRecord()]);
 
         session()->flash('success', 'Artikel baru berhasil dipublikasikan.');
         return redirect()->route('monitoring.indexArtikel');
@@ -120,7 +122,7 @@ class MonitoringController extends Controller
         ]);
 
         $article = Article::findOrFail($id);
-        $validated['is_demo'] = true;
+        $validated['is_demo'] = $this->isDemoRecord();
         $article->update($validated);
 
         session()->flash('success', 'Artikel berhasil diperbarui.');

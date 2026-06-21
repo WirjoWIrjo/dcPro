@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\Traits\DemoMode;
 use App\Models\Gallery;
 use Illuminate\Http\Request;
 
 class GalleryController extends Controller
 {
+    use DemoMode;
     public function index()
     {
         $galleries = Gallery::latest()->paginate(12);
@@ -35,7 +37,7 @@ class GalleryController extends Controller
             $validated['image'] = 'uploads/galleries/' . $filename;
         }
 
-        Gallery::create($validated + ['is_demo' => true]);
+        Gallery::create($validated + ['is_demo' => $this->isDemoRecord()]);
 
         return redirect()->route('admin.galleries.index')->with('success', 'Galeri berhasil ditambahkan.');
     }
@@ -69,7 +71,7 @@ class GalleryController extends Controller
             $validated['image'] = 'uploads/galleries/' . $filename;
         }
 
-        $validated['is_demo'] = true;
+        $validated['is_demo'] = $this->isDemoRecord();
         $gallery->update($validated);
 
         return redirect()->route('admin.galleries.index')->with('success', 'Galeri berhasil diperbarui.');

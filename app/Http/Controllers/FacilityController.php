@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Admin\Traits\DemoMode;
 use App\Models\FacilitySystem;
 use Illuminate\Http\Request;
 
 class FacilityController extends Controller
 {
+    use DemoMode;
     public function index()
     {
         $systems = FacilitySystem::orderByDesc('created_at')->paginate(12);
@@ -33,7 +35,7 @@ class FacilityController extends Controller
             'status'           => ['required', 'in:Active,Inactive,Maintenance'],
         ]);
 
-        FacilitySystem::create($validated + ['is_demo' => true]);
+        FacilitySystem::create($validated + ['is_demo' => $this->isDemoRecord()]);
 
         session()->flash('success', 'Sistem baru berhasil ditambahkan.');
         return redirect()->route('facilities.index');
@@ -55,7 +57,7 @@ class FacilityController extends Controller
         ]);
 
         $system = FacilitySystem::findOrFail($id);
-        $validated['is_demo'] = true;
+        $validated['is_demo'] = $this->isDemoRecord();
         $system->update($validated);
 
         session()->flash('success', 'Data sistem berhasil diperbarui.');

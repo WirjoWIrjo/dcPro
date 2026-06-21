@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\Traits\DemoMode;
 use App\Models\CompanyProfile;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
+    use DemoMode;
     public function edit()
     {
         $profile = CompanyProfile::firstOrCreate([], [
@@ -40,10 +42,10 @@ class ProfileController extends Controller
 
         $profile = CompanyProfile::first();
         if ($profile) {
-            $validated['is_demo'] = true;
+            $validated['is_demo'] = $this->isDemoRecord();
             $profile->update($validated);
         } else {
-            CompanyProfile::create($validated + ['is_demo' => true]);
+            CompanyProfile::create($validated + ['is_demo' => $this->isDemoRecord()]);
         }
 
         return redirect()->route('admin.profile.edit')->with('success', 'Profil perusahaan berhasil diperbarui.');

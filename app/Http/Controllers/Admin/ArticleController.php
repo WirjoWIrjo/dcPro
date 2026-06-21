@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\Traits\DemoMode;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class ArticleController extends Controller
 {
+    use DemoMode;
     public function index()
     {
         $articles = Article::latest()->paginate(10);
@@ -39,7 +41,7 @@ class ArticleController extends Controller
             $validated['image'] = 'uploads/articles/' . $filename;
         }
 
-        Article::create($validated + ['is_demo' => true]);
+        Article::create($validated + ['is_demo' => $this->isDemoRecord()]);
 
         return redirect()->route('admin.articles.index')->with('success', 'Artikel berhasil ditambahkan.');
     }
@@ -76,7 +78,7 @@ class ArticleController extends Controller
             $validated['image'] = 'uploads/articles/' . $filename;
         }
 
-        $validated['is_demo'] = true;
+        $validated['is_demo'] = $this->isDemoRecord();
         $article->update($validated);
 
         return redirect()->route('admin.articles.index')->with('success', 'Artikel berhasil diperbarui.');

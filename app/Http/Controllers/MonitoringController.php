@@ -2,20 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\EnergyMetric;   // Model that stores PUE / consumption data
-use App\Models\Article;       // Model for the sustainability blog posts
-use Illuminate\Http\Request;  // Handles incoming HTTP request data
+use App\Models\EnergyMetric;
+use App\Models\Article;
+use Illuminate\Http\Request;
 
 /**
  * MonitoringController
  *
- * Centralises all actions that deal with the **energy‑monitoring**
- * dashboard and the **sustainability articles** section.
- *
- * The original snippet only returned a list of metrics and a list of
- * articles.  Below we keep those two index methods intact and extend
- * the controller with a full set of CRUD operations for both resources,
- * plus a few helpful helper methods (e.g., JSON response).
+ * This controller for managing energy metrics and articles.
+ * It handles both sustainability dashboard and article CRUD operations.
  */
 class MonitoringController extends Controller
 {
@@ -24,20 +19,19 @@ class MonitoringController extends Controller
     // -----------------------------------------------------------------
 
     /**
-     * Show the sustainability dashboard (list of energy metrics).
+     * This function for displaying the sustainability dashboard.
      *
      * @return \Illuminate\View\View
      */
     public function index()
     {
-        // You may want to paginate if the table grows: ->paginate(12)
         $metrics = EnergyMetric::orderByDesc('created_at')->get();
 
         return view('pages.sustainability', compact('metrics'));
     }
 
     /**
-     * Show a single metric in a dedicated view (optional).
+     * This function for showing a single metric detail.
      *
      * @param  int  $id
      * @return \Illuminate\View\View
@@ -49,7 +43,7 @@ class MonitoringController extends Controller
     }
 
     /**
-     * Show the form for creating a new metric.
+     * This function for showing the metric creation form.
      *
      * @return \Illuminate\View\View
      */
@@ -59,7 +53,7 @@ class MonitoringController extends Controller
     }
 
     /**
-     * Store a newly created metric.
+     * This function for storing a new metric to database.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
@@ -79,7 +73,7 @@ class MonitoringController extends Controller
     }
 
     /**
-     * Show the form for editing an existing metric.
+     * This function for showing the metric edit form.
      *
      * @param  int  $id
      * @return \Illuminate\View\View
@@ -91,7 +85,7 @@ class MonitoringController extends Controller
     }
 
     /**
-     * Update an existing metric.
+     * This function for updating an existing metric.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int                       $id
@@ -113,7 +107,7 @@ class MonitoringController extends Controller
     }
 
     /**
-     * Delete a metric.
+     * This function for deleting a metric from database.
      *
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
@@ -121,7 +115,7 @@ class MonitoringController extends Controller
     public function destroyMetric(int $id)
     {
         $metric = EnergyMetric::findOrFail($id);
-        $metric->delete(); // SoftDeletes will only flag the row
+        $metric->delete();
 
         session()->flash('success', 'Metric berhasil dihapus.');
         return redirect()->route('monitoring.index');
@@ -132,25 +126,19 @@ class MonitoringController extends Controller
     // -----------------------------------------------------------------
 
     /**
-     * Show the article listing page.
-     *
-     * The original method was called `indexArtikel`; we keep the route name
-     * but also expose a more conventional `articlesIndex` for future use.
+     * This function for displaying the article listing page.
      *
      * @return \Illuminate\View\View
      */
     public function indexArtikel()
     {
-        // Latest first – you could add pagination: ->paginate(9)
         $articles = Article::latest()->get();
 
-        // Note: Blade view file names are case‑sensitive on some OSes;
-        // using lowercase 'article' keeps things consistent.
         return view('pages.article', compact('articles'));
     }
 
     /**
-     * Show a single article.
+     * This function for showing a single article detail.
      *
      * @param  int  $id
      * @return \Illuminate\View\View
@@ -162,7 +150,7 @@ class MonitoringController extends Controller
     }
 
     /**
-     * Show the form to create a new article.
+     * This function for showing the article creation form.
      *
      * @return \Illuminate\View\View
      */
@@ -172,7 +160,7 @@ class MonitoringController extends Controller
     }
 
     /**
-     * Store a newly created article.
+     * This function for storing a new article to database.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
@@ -183,7 +171,6 @@ class MonitoringController extends Controller
             'title'   => ['required', 'string', 'max:255'],
             'excerpt' => ['required', 'string', 'max:500'],
             'content' => ['required', 'string'],
-            // Optional image upload could be added here
         ]);
 
         Article::create($validated);
@@ -193,7 +180,7 @@ class MonitoringController extends Controller
     }
 
     /**
-     * Show the edit form for an existing article.
+     * This function for showing the article edit form.
      *
      * @param  int  $id
      * @return \Illuminate\View\View
@@ -205,7 +192,7 @@ class MonitoringController extends Controller
     }
 
     /**
-     * Update an existing article.
+     * This function for updating an existing article.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int                       $id
@@ -227,7 +214,7 @@ class MonitoringController extends Controller
     }
 
     /**
-     * Delete an article.
+     * This function for deleting an article from database.
      *
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
@@ -235,20 +222,18 @@ class MonitoringController extends Controller
     public function destroyArticle(int $id)
     {
         $article = Article::findOrFail($id);
-        $article->delete(); // SoftDeletes if enabled
+        $article->delete();
 
         session()->flash('success', 'Artikel berhasil dihapus.');
         return redirect()->route('monitoring.indexArtikel');
     }
 
     // -----------------------------------------------------------------
-    // OPTIONAL HELPER METHODS
+    // API HELPER METHODS
     // -----------------------------------------------------------------
 
     /**
-     * Return metrics as JSON for API consumers.
-     *
-     * Demonstrates how you could expose a read‑only endpoint.
+     * This function for returning metrics as JSON for API.
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -263,7 +248,7 @@ class MonitoringController extends Controller
     }
 
     /**
-     * Return latest articles as JSON.
+     * This function for returning latest articles as JSON.
      *
      * @return \Illuminate\Http\JsonResponse
      */

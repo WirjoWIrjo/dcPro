@@ -2,87 +2,61 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\FacilitySystem;          // Eloquent model that represents a data‑center system
-use Illuminate\Http\Request;             // Handles incoming HTTP request data
-use Illuminate\Support\Facades\Redirect; // Optional, for explicit redirects
+use App\Models\FacilitySystem;
+use Illuminate\Http\Request;
 
 /**
  * FacilityController
  *
- * Handles CRUD operations for the **Facility System** resource that is
- * displayed on the “Infrastructure” page (`pages.infrastructure`).
- *
- * The original snippet only listed all systems.  Below we keep that
- * functionality and extend the controller with a few useful actions:
- *   • `index()` – list (paginated) systems.
- *   • `show()`  – view details of a single system.
- *   • `create()` / `store()` – show a creation form and persist a new record.
- *   • `edit()` / `update()` – edit an existing record.
- *   • `destroy()` – delete a system (soft‑delete or hard‑delete as you prefer).
- *
- * All methods return Blade views located under `resources/views/pages/…`
- * (you can rename the view folder to suit your convention).
+ * This controller for managing facility system CRUD operations.
+ * It handles the Infrastructure page data display and management.
  */
 class FacilityController extends Controller
 {
     /**
-     * Display a paginated list of all facility systems.
+     * This function for displaying all facility systems with pagination.
      *
      * @return \Illuminate\View\View
      */
     public function index()
     {
-        // Retrieve systems ordered by newest first and paginate (12 per page).
-        // Pagination prevents loading thousands of rows in one request.
         $systems = FacilitySystem::orderByDesc('created_at')
                                 ->paginate(12);
 
-        // Pass the paginated collection to the view.
-        // In the Blade file you can render pagination links with `$systems->links()`.
         return view('pages.infrastructure', compact('systems'));
     }
 
     /**
-     * Show a single system's details.
+     * This function for showing a single system detail.
      *
-     * @param  int  $id  The primary key of the FacilitySystem.
+     * @param  int  $id
      * @return \Illuminate\View\View
      */
     public function show(int $id)
     {
-        // `findOrFail` will automatically throw a 404 if the record does not exist.
         $system = FacilitySystem::findOrFail($id);
-
-        // You can create a dedicated view (e.g., pages.system-show) or reuse the
-        // infrastructure view in a “detail” mode.
         return view('pages.system-show', compact('system'));
     }
 
     /**
-     * Show the form to create a new facility system.
+     * This function for showing the system creation form.
      *
      * @return \Illuminate\View\View
      */
     public function create()
     {
-        // If you need lookup data (e.g., categories) you can fetch them here.
-        // $categories = FacilityCategory::all();
-        // return view('pages.system-create', compact('categories'));
-
         return view('pages.system-create');
     }
 
     /**
-     * Store a newly created system in the database.
+     * This function for storing a new system to database.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
-        // -----------------------------------------------------------------
-        // 1️⃣ Validate incoming data.
-        // -----------------------------------------------------------------
+        // Step 1: Validate the incoming data.
         $validated = $request->validate([
             'system_category' => ['required', 'string', 'max:100'],
             'equipment_name'   => ['required', 'string', 'max:255'],
@@ -90,20 +64,16 @@ class FacilityController extends Controller
             'status'           => ['required', 'in:Active,Inactive,Maintenance'],
         ]);
 
-        // -----------------------------------------------------------------
-        // 2️⃣ Persist the new record.
-        // -----------------------------------------------------------------
+        // Step 2: Save the new record.
         FacilitySystem::create($validated);
 
-        // -----------------------------------------------------------------
-        // 3️⃣ Flash a success message and redirect.
-        // -----------------------------------------------------------------
+        // Step 3: Redirect back with success message.
         session()->flash('success', 'Sistem baru berhasil ditambahkan.');
         return redirect()->route('facilities.index');
     }
 
     /**
-     * Show the form for editing an existing system.
+     * This function for showing the system edit form.
      *
      * @param  int  $id
      * @return \Illuminate\View\View
@@ -111,14 +81,11 @@ class FacilityController extends Controller
     public function edit(int $id)
     {
         $system = FacilitySystem::findOrFail($id);
-        // $categories = FacilityCategory::all(); // if you have categories
-        // return view('pages.system-edit', compact('system', 'categories'));
-
         return view('pages.system-edit', compact('system'));
     }
 
     /**
-     * Update the specified system in storage.
+     * This function for updating an existing system.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int                     $id
@@ -126,9 +93,7 @@ class FacilityController extends Controller
      */
     public function update(Request $request, int $id)
     {
-        // -----------------------------------------------------------------
-        // 1️⃣ Validate the incoming data (same rules as store).
-        // -----------------------------------------------------------------
+        // Step 1: Validate the incoming data.
         $validated = $request->validate([
             'system_category' => ['required', 'string', 'max:100'],
             'equipment_name'   => ['required', 'string', 'max:255'],
@@ -136,29 +101,23 @@ class FacilityController extends Controller
             'status'           => ['required', 'in:Active,Inactive,Maintenance'],
         ]);
 
-        // -----------------------------------------------------------------
-        // 2️⃣ Find the record and apply updates.
-        // -----------------------------------------------------------------
+        // Step 2: Find and update the record.
         $system = FacilitySystem::findOrFail($id);
         $system->update($validated);
 
-        // -----------------------------------------------------------------
-        // 3️⃣ Flash a success message and redirect back to the list.
-        // -----------------------------------------------------------------
+        // Step 3: Redirect back with success message.
         session()->flash('success', 'Data sistem berhasil diperbarui.');
         return redirect()->route('facilities.index');
     }
 
     /**
-     * Remove the specified system from storage.
+     * This function for deleting a system from database.
      *
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(int $id)
     {
-        // If the model uses SoftDeletes you could call `$system->delete()`.
-        // For a hard delete, use `forceDelete()`.
         $system = FacilitySystem::findOrFail($id);
         $system->delete();
 

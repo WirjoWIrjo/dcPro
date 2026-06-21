@@ -71,6 +71,14 @@
                     <i class="bi bi-box-arrow-in-right me-2"></i>Login
                 </button>
             </form>
+
+            <div class="mt-4 p-3 bg-light rounded">
+                <h6 class="fw-bold text-muted mb-2"><i class="bi bi-info-circle"></i> Demo Login</h6>
+                <div class="small">
+                    <div class="mb-1"><strong>Admin Demo:</strong> admin@datacenterpro.com / password</div>
+                    <div><strong>Owner:</strong> owner@datacenterpro.com / password_2026</div>
+                </div>
+            </div>
         </div>
     </div>
 </body>

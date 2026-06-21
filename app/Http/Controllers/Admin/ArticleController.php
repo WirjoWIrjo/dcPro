@@ -37,7 +37,11 @@ class ArticleController extends Controller
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads/articles'), $filename);
+            $uploadPath = public_path('uploads/articles');
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+            $file->move($uploadPath, $filename);
             $validated['image'] = 'uploads/articles/' . $filename;
         }
 
@@ -74,7 +78,11 @@ class ArticleController extends Controller
             }
             $file = $request->file('image');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads/articles'), $filename);
+            $uploadPath = public_path('uploads/articles');
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+            $file->move($uploadPath, $filename);
             $validated['image'] = 'uploads/articles/' . $filename;
         }
 

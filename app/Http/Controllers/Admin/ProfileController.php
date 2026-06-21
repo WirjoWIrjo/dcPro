@@ -36,7 +36,11 @@ class ProfileController extends Controller
         if ($request->hasFile('logo')) {
             $file = $request->file('logo');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads/profile'), $filename);
+            $uploadPath = public_path('uploads/profile');
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+            $file->move($uploadPath, $filename);
             $validated['logo'] = 'uploads/profile/' . $filename;
         }
 

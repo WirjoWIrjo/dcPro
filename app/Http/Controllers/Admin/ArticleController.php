@@ -37,7 +37,7 @@ class ArticleController extends Controller
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $uploadPath = public_path('uploads/articles');
+            $uploadPath = $_SERVER['DOCUMENT_ROOT'] . '/uploads/articles';
             if (!is_dir($uploadPath)) {
                 mkdir($uploadPath, 0755, true);
             }
@@ -73,12 +73,12 @@ class ArticleController extends Controller
         $validated['slug'] = Str::slug($validated['title']);
 
         if ($request->hasFile('image')) {
-            if ($article->image && file_exists(public_path($article->image))) {
-                unlink(public_path($article->image));
+            if ($article->image && file_exists($_SERVER['DOCUMENT_ROOT'] . '/' . $article->image)) {
+                unlink($_SERVER['DOCUMENT_ROOT'] . '/' . $article->image);
             }
             $file = $request->file('image');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $uploadPath = public_path('uploads/articles');
+            $uploadPath = $_SERVER['DOCUMENT_ROOT'] . '/uploads/articles';
             if (!is_dir($uploadPath)) {
                 mkdir($uploadPath, 0755, true);
             }
@@ -94,8 +94,8 @@ class ArticleController extends Controller
 
     public function destroy(Article $article)
     {
-        if ($article->image && file_exists(public_path($article->image))) {
-            unlink(public_path($article->image));
+        if ($article->image && file_exists($_SERVER['DOCUMENT_ROOT'] . '/' . $article->image)) {
+            unlink($_SERVER['DOCUMENT_ROOT'] . '/' . $article->image);
         }
 
         $article->delete();

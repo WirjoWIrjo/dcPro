@@ -33,7 +33,7 @@ class GalleryController extends Controller
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $uploadPath = public_path('uploads/galleries');
+            $uploadPath = $_SERVER['DOCUMENT_ROOT'] . '/uploads/galleries';
             if (!is_dir($uploadPath)) {
                 mkdir($uploadPath, 0755, true);
             }
@@ -66,12 +66,12 @@ class GalleryController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            if ($gallery->image && file_exists(public_path($gallery->image))) {
-                unlink(public_path($gallery->image));
+            if ($gallery->image && file_exists($_SERVER['DOCUMENT_ROOT'] . '/' . $gallery->image)) {
+                unlink($_SERVER['DOCUMENT_ROOT'] . '/' . $gallery->image);
             }
             $file = $request->file('image');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $uploadPath = public_path('uploads/galleries');
+            $uploadPath = $_SERVER['DOCUMENT_ROOT'] . '/uploads/galleries';
             if (!is_dir($uploadPath)) {
                 mkdir($uploadPath, 0755, true);
             }
@@ -87,8 +87,8 @@ class GalleryController extends Controller
 
     public function destroy(Gallery $gallery)
     {
-        if ($gallery->image && file_exists(public_path($gallery->image))) {
-            unlink(public_path($gallery->image));
+        if ($gallery->image && file_exists($_SERVER['DOCUMENT_ROOT'] . '/' . $gallery->image)) {
+            unlink($_SERVER['DOCUMENT_ROOT'] . '/' . $gallery->image);
         }
 
         $gallery->delete();

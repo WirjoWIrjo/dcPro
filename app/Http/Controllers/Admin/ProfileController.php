@@ -36,7 +36,7 @@ class ProfileController extends Controller
         if ($request->hasFile('logo')) {
             $file = $request->file('logo');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $uploadPath = public_path('uploads/profile');
+            $uploadPath = $_SERVER['DOCUMENT_ROOT'] . '/uploads/profile';
             if (!is_dir($uploadPath)) {
                 mkdir($uploadPath, 0755, true);
             }

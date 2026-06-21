@@ -38,7 +38,7 @@ class ProductController extends Controller
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $uploadPath = public_path('uploads/products');
+            $uploadPath = $_SERVER['DOCUMENT_ROOT'] . '/uploads/products';
             if (!is_dir($uploadPath)) {
                 mkdir($uploadPath, 0755, true);
             }
@@ -75,12 +75,12 @@ class ProductController extends Controller
         $validated['slug'] = Str::slug($validated['name']);
 
         if ($request->hasFile('image')) {
-            if ($product->image && file_exists(public_path($product->image))) {
-                unlink(public_path($product->image));
+            if ($product->image && file_exists($_SERVER['DOCUMENT_ROOT'] . '/' . $product->image)) {
+                unlink($_SERVER['DOCUMENT_ROOT'] . '/' . $product->image);
             }
             $file = $request->file('image');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $uploadPath = public_path('uploads/products');
+            $uploadPath = $_SERVER['DOCUMENT_ROOT'] . '/uploads/products';
             if (!is_dir($uploadPath)) {
                 mkdir($uploadPath, 0755, true);
             }
@@ -96,8 +96,8 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
-        if ($product->image && file_exists(public_path($product->image))) {
-            unlink(public_path($product->image));
+        if ($product->image && file_exists($_SERVER['DOCUMENT_ROOT'] . '/' . $product->image)) {
+            unlink($_SERVER['DOCUMENT_ROOT'] . '/' . $product->image);
         }
 
         $product->delete();

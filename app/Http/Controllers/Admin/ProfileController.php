@@ -6,18 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\CompanyProfile;
 use Illuminate\Http\Request;
 
-/**
- * ProfileController
- *
- * This controller for managing company profile in admin panel.
- */
 class ProfileController extends Controller
 {
-    /**
-     * This function for displaying the company profile edit form.
-     *
-     * @return \Illuminate\View\View
-     */
     public function edit()
     {
         $profile = CompanyProfile::firstOrCreate([], [
@@ -27,12 +17,6 @@ class ProfileController extends Controller
         return view('admin.profile.edit', compact('profile'));
     }
 
-    /**
-     * This function for updating the company profile.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function update(Request $request)
     {
         $validated = $request->validate([

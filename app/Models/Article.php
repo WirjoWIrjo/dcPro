@@ -9,6 +9,5 @@ class Article extends Model
 {
     use HasFactory;
 
-    // Izinkan kolom ini diisi (Mass Assignment)
     protected $fillable = ['title', 'slug', 'category', 'excerpt', 'content', 'image'];
 }

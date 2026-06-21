@@ -6,35 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Models\Gallery;
 use Illuminate\Http\Request;
 
-/**
- * GalleryController
- *
- * This controller for managing gallery CRUD operations in admin panel.
- */
 class GalleryController extends Controller
 {
-    /**
-     * This function for displaying all gallery items with pagination.
-     */
     public function index()
     {
         $galleries = Gallery::latest()->paginate(12);
         return view('admin.galleries.index', compact('galleries'));
     }
 
-    /**
-     * This function for showing the gallery creation form.
-     */
     public function create()
     {
         return view('admin.galleries.create');
     }
 
-    /**
-     * This function for storing a new gallery item with image upload.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -56,28 +40,16 @@ class GalleryController extends Controller
         return redirect()->route('admin.galleries.index')->with('success', 'Galeri berhasil ditambahkan.');
     }
 
-    /**
-     * This function for displaying a single gallery item detail.
-     */
     public function show(Gallery $gallery)
     {
         return view('admin.galleries.show', compact('gallery'));
     }
 
-    /**
-     * This function for showing the gallery edit form.
-     */
     public function edit(Gallery $gallery)
     {
         return view('admin.galleries.edit', compact('gallery'));
     }
 
-    /**
-     * This function for updating an existing gallery item.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Gallery       $gallery
-     */
     public function update(Request $request, Gallery $gallery)
     {
         $validated = $request->validate([
@@ -102,11 +74,6 @@ class GalleryController extends Controller
         return redirect()->route('admin.galleries.index')->with('success', 'Galeri berhasil diperbarui.');
     }
 
-    /**
-     * This function for deleting a gallery item and its image.
-     *
-     * @param  \App\Models\Gallery  $gallery
-     */
     public function destroy(Gallery $gallery)
     {
         if ($gallery->image && file_exists(public_path($gallery->image))) {

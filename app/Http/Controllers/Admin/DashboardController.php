@@ -8,18 +8,8 @@ use App\Models\CompanyProfile;
 use App\Models\Gallery;
 use App\Models\Product;
 
-/**
- * DashboardController
- *
- * This controller for displaying the admin dashboard summary.
- */
 class DashboardController extends Controller
 {
-    /**
-     * This function for displaying the dashboard with data counts.
-     *
-     * @return \Illuminate\View\View
-     */
     public function index()
     {
         $stats = [
